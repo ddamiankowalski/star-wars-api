@@ -14,7 +14,6 @@ export class StarsBackground {
     this._renderer = new StarRenderer();
 
     this.draw();
-    this._canvas.onclick = () => AnimationManager.startAnimation(this);
   }
 
   get context(): CanvasRenderingContext2D {
@@ -24,6 +23,10 @@ export class StarsBackground {
       throw new Error('Could not get 2DContext');
     }
     return context;
+  }
+
+  startAnimation(): void {
+    AnimationManager.startAnimation(this);
   }
 
   update(mult: number): void {

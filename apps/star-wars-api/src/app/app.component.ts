@@ -1,15 +1,32 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { StarsBackground } from '@star-wars-api/star-wars-bg';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  ViewChild,
+  ViewEncapsulation,
+  inject,
+} from '@angular/core';
+import { ClassBinder } from './common/services/class-binder.service';
+import { StarsBackgroundService } from './common/services/star-background.service';
 
 @Component({
-  selector: 'star-wars-api-root',
+  selector: 'swapi-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  providers: [ClassBinder],
+  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements AfterViewInit {
   @ViewChild('starCanvas', { read: ElementRef }) starCanvas!: ElementRef;
 
+  private _background = inject(StarsBackgroundService);
+
+  constructor(classBinder: ClassBinder) {
+    classBinder.bind('swapi-root');
+  }
+
   ngAfterViewInit(): void {
-    const bg = new StarsBackground(this.starCanvas.nativeElement);
+    this._background.initialize(this.starCanvas.nativeElement);
+    this._background.startAnimation();
   }
 }

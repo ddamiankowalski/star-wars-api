@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "starWarsApi",
+            "prefix": "swapi",
             "style": "camelCase"
           }
         ],
@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "star-wars-api",
+            "prefix": "swapi",
             "style": "kebab-case"
           }
         ]
