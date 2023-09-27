@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { starWarsBg } from '@star-wars-api/star-wars-bg';
 
 @Component({
   selector: 'star-wars-api-root',
@@ -7,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'star-wars-api';
+
+  constructor() {
+    console.log(starWarsBg);
+  }
 }

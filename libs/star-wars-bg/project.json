@@ -1,0 +1,26 @@
+{
+  "name": "star-wars-bg",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/star-wars-bg/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/star-wars-bg"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/star-wars-bg/**/*.ts",
+          "libs/star-wars-bg/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
