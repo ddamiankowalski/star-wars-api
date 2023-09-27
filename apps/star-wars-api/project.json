@@ -19,7 +19,7 @@
           "apps/star-wars-api/src/favicon.ico",
           "apps/star-wars-api/src/assets"
         ],
-        "styles": ["apps/star-wars-api/src/styles.scss"],
+        "styles": ["apps/star-wars-api/src/styles.scss", "apps/star-wars-api/src/theme.scss"],
         "scripts": []
       },
       "configurations": {

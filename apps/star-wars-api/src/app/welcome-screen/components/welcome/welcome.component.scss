@@ -6,16 +6,23 @@
 
   &__wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    height: 100%;
     width: 70%;
+  }
+
+  &__img-wrapper {
+    user-select: none;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
   }
 
   &__logo {
     animation-name: logo-show;
     animation-duration: 2.5s;
     display: block;
-    width: 100%;
+    width: 80%;
     max-width: 36rem;
   }
 }

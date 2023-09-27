@@ -3,7 +3,7 @@ import {
   Component,
   ViewEncapsulation,
 } from '@angular/core';
-import { ClassBinder } from '../../common/services/class-binder.service';
+import { ClassBinder } from '../../../common/services/class-binder.service';
 
 @Component({
   selector: 'swapi-welcome',

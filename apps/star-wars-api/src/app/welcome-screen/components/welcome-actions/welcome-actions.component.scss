@@ -1,0 +1,37 @@
+.swapi-welcome-actions {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  animation-name: action-show;
+  animation-duration: 1.5s;
+
+  &__message {
+    margin: 1rem 0;
+    text-align: center;
+    color: var(--mat-toolbar-container-background-color);
+  }
+
+  &__buttons {
+    display: flex;
+    text-wrap: nowrap;
+    gap: .5rem;
+  }
+}
+
+@keyframes action-show {
+  0% {
+    opacity: 0;
+    transform: translateY(-2rem)
+  }
+
+  50% {
+    opacity: 0;
+    transform: translateY(-2rem)
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
