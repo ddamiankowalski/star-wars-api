@@ -1,1 +1,1 @@
-export * from './lib/star-wars-bg';
+export * from './lib/classes/stars-background';

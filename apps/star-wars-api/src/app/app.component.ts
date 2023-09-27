@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
-import { starWarsBg } from '@star-wars-api/star-wars-bg';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { StarsBackground } from '@star-wars-api/star-wars-bg';
 
 @Component({
   selector: 'star-wars-api-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'star-wars-api';
+export class AppComponent implements AfterViewInit {
+  @ViewChild('starCanvas', { read: ElementRef }) starCanvas!: ElementRef;
 
-  constructor() {
-    console.log(starWarsBg);
+  ngAfterViewInit(): void {
+    const bg = new StarsBackground(this.starCanvas.nativeElement);
   }
 }
