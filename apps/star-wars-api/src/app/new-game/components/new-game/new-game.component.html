@@ -2,3 +2,9 @@
   <swapi-player-card type="PLAYER"></swapi-player-card>
   <swapi-player-card type="ENEMY"></swapi-player-card>
 </div>
+
+<section *ngIf="!isLoading" class="swapi-new-game__main-actions">
+  <button mat-flat-button color="primary">Next round</button>
+  <button mat-stroked-button color="primary">Use Spaceships</button>
+  <button mat-stroked-button color="primary" (click)="onQuit()">Quit</button>
+</section>

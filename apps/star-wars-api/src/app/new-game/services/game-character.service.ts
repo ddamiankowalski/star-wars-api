@@ -41,6 +41,7 @@ export class GameCharacterService {
         map((character) => ({ ...character, type: GameCharacterType.Person })),
         catchError((err) => {
           this.getPerson(type);
+          this._state.unsetLoading();
           throw err;
         })
       )
@@ -64,6 +65,7 @@ export class GameCharacterService {
         })),
         catchError((err) => {
           this.getStarship(type);
+          this._state.unsetLoading();
           throw err;
         })
       )

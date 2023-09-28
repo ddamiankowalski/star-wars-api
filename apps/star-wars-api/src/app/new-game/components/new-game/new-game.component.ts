@@ -7,6 +7,8 @@ import {
 import { ClassBinder } from '../../../common/services/class-binder.service';
 import { GameCharacterService } from '../../services/game-character.service';
 import { GameCharacterType } from '../../types/icharacter';
+import { GameStateService } from '../../services/game-state.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'swapi-new-game',
@@ -19,13 +21,23 @@ import { GameCharacterType } from '../../types/icharacter';
 export class NewGameComponent implements OnInit {
   constructor(
     classBinder: ClassBinder,
-    private _character: GameCharacterService
+    private _character: GameCharacterService,
+    private _state: GameStateService,
+    private _router: Router
   ) {
     classBinder.bind('swapi-new-game');
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.loadPlayerCharacter();
+  }
+
+  public onQuit(): void {
+    this._router.navigate(['']);
+  }
+
+  get isLoading(): boolean {
+    return this._state.isLoading;
   }
 
   public loadPlayerCharacter(

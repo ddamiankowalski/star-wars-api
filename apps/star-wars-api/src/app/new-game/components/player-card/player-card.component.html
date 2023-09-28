@@ -11,16 +11,11 @@
       </mat-card-header>
       <mat-card-content class="swapi-player-card__content">
         <p>{{ model.description }}</p>
-        <p>
+        <p class="swapi-player-card__content-points">
           <span class="swapi-player-card__content--bold">Points:</span>
           {{ model.value }}
         </p>
       </mat-card-content>
     </ng-container>
-
-    <mat-card-actions class="swapi-player-card__actions">
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
-    </mat-card-actions>
   </mat-card>
 </div>
