@@ -1,0 +1,13 @@
+.swapi-player-card {
+  &__wrapper {
+    min-width: 10rem;
+    min-height: 10rem;
+  }
+
+  &__subtitle {
+    font-size: .75rem !important;
+    font-weight: 500 !important;
+    margin: .3125rem 0 !important;
+    max-width: 10rem;
+  }
+}

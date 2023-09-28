@@ -1,6 +1,10 @@
 .swapi-new-game {
-  display: flex;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
+  &__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    gap: 1rem;
+  }
 }

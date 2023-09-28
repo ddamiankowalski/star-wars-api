@@ -1,10 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  OnInit,
   ViewEncapsulation,
 } from '@angular/core';
 import { ClassBinder } from '../../../common/services/class-binder.service';
-import { GameStateService } from '../../services/game-state.service';
+import { GameCharacterService } from '../../services/game-character.service';
+import { GameCharacterType } from '../../types/icharacter';
 
 @Component({
   selector: 'swapi-new-game',
@@ -14,11 +16,23 @@ import { GameStateService } from '../../services/game-state.service';
   encapsulation: ViewEncapsulation.None,
   providers: [ClassBinder],
 })
-export class NewGameComponent {
-  constructor(classBinder: ClassBinder, private _state: GameStateService) {
+export class NewGameComponent implements OnInit {
+  constructor(
+    classBinder: ClassBinder,
+    private _character: GameCharacterService
+  ) {
     classBinder.bind('swapi-new-game');
-    setTimeout(() => {
-      this._state.setLoading();
-    });
+  }
+
+  ngOnInit(): void {
+    this.loadPlayerCharacter();
+  }
+
+  public loadPlayerCharacter(
+    type: GameCharacterType = GameCharacterType.Person
+  ): void {
+    type === GameCharacterType.Person
+      ? this._character.getPerson()
+      : this._character.getStarship();
   }
 }

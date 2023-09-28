@@ -17,6 +17,10 @@ export class GameStateService {
   }
 
   public setLoading(): void {
+    if (this.isLoading) {
+      return;
+    }
+
     this._loadingDialogRef = this._dialog.open(GameLoaderComponent, {
       disableClose: true,
       autoFocus: false,

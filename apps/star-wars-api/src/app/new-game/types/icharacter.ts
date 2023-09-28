@@ -1,6 +1,11 @@
-interface ICharacter {
+export interface ICharacter {
   message: string;
   description: string;
+  type: GameCharacterType;
+  result: {
+    properties: IGameCommonProperties;
+    description: string;
+  };
 }
 
 interface IGamePersonProperties {
@@ -15,10 +20,27 @@ interface IGameStarshipProperties {
   name: string;
 }
 
+interface IGameCommonProperties {
+  name: string;
+}
+
 export interface IGamePersonCharacter extends ICharacter {
-  result: IGamePersonProperties;
+  result: {
+    properties: IGamePersonProperties;
+    description: string;
+  };
 }
 
 export interface IGameStarshipCharacter extends ICharacter {
-  result: IGameStarshipProperties;
+  result: {
+    properties: IGameStarshipProperties;
+    description: string;
+  };
 }
+
+export enum GameCharacterType {
+  Person = 'PERSON',
+  Starship = 'STARSHIP',
+}
+
+export type PlayerType = 'PLAYER' | 'ENEMY';
