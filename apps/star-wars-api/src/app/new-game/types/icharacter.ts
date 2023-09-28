@@ -12,6 +12,7 @@ interface IGamePersonProperties {
   height: string;
   mass: string;
   name: string;
+  gender: string;
 }
 
 interface IGameStarshipProperties {

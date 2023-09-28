@@ -1,10 +1,26 @@
 <div *ngIf="character$ | async as character" class="swapi-player-card__wrapper">
   <mat-card>
-    <mat-card-header>
-      <mat-card-subtitle class="swapi-player-card__subtitle">{{
-        character.result.description
-      }}</mat-card-subtitle>
-      <mat-card-title>{{ character.result.properties.name }}</mat-card-title>
-    </mat-card-header>
+    <ng-container *ngIf="character | characterModel as model">
+      <mat-card-header>
+        <mat-card-subtitle class="swapi-player-card__subtitle">{{
+          model.subtitle
+        }}</mat-card-subtitle>
+        <mat-card-title class="swapi-player-card__title">{{
+          model.title
+        }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="swapi-player-card__content">
+        <p>{{ model.description }}</p>
+        <p>
+          <span class="swapi-player-card__content--bold">Points:</span>
+          {{ model.value }}
+        </p>
+      </mat-card-content>
+    </ng-container>
+
+    <mat-card-actions class="swapi-player-card__actions">
+      <button mat-button>LIKE</button>
+      <button mat-button>SHARE</button>
+    </mat-card-actions>
   </mat-card>
 </div>

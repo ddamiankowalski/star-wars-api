@@ -7,7 +7,24 @@
   &__subtitle {
     font-size: .75rem !important;
     font-weight: 500 !important;
-    margin: .3125rem 0 !important;
+    margin: .5rem 0 !important;
     max-width: 10rem;
+  }
+
+  &__title {
+    font-weight: 500 !important;
+  }
+
+  &__content {
+    font-size: .8125rem;
+    margin-bottom: .75rem 0;
+
+    &--bold {
+      font-weight: 500;
+    }
+  }
+
+  &__actions {
+    margin-top: .75rem;
   }
 }

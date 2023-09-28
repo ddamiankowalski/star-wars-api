@@ -4,6 +4,7 @@ import { GameLoaderComponent } from '../components/game-loader/game-loader.compo
 
 @Injectable()
 export class GameStateService {
+  private _loadingRef = 0;
   private _isLoading = false;
   private _loadingDialogRef: DialogRef<
     GameLoaderComponent,
@@ -17,6 +18,8 @@ export class GameStateService {
   }
 
   public setLoading(): void {
+    this._loadingRef++;
+
     if (this.isLoading) {
       return;
     }
@@ -25,11 +28,16 @@ export class GameStateService {
       disableClose: true,
       autoFocus: false,
     });
+
     this._isLoading = true;
   }
 
   public unsetLoading(): void {
-    this._loadingDialogRef?.close();
-    this._isLoading = false;
+    this._loadingRef--;
+
+    if (this._loadingRef === 0) {
+      this._loadingDialogRef?.close();
+      this._isLoading = false;
+    }
   }
 }

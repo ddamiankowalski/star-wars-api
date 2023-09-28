@@ -8,6 +8,7 @@ import {
 } from '../types/icharacter';
 import { Observable, map, catchError, BehaviorSubject } from 'rxjs';
 import { GameStateService } from './game-state.service';
+import { PlayerType } from '../types/icharacter';
 
 @Injectable()
 export class GameCharacterService {
@@ -29,7 +30,7 @@ export class GameCharacterService {
     return this._enemyCharacter$.asObservable();
   }
 
-  public getPerson(): void {
+  public getPerson(type: PlayerType = 'PLAYER'): void {
     this._resetCharacters();
     this._state.setLoading();
     this._http
@@ -39,17 +40,17 @@ export class GameCharacterService {
       .pipe(
         map((character) => ({ ...character, type: GameCharacterType.Person })),
         catchError((err) => {
-          this.getPerson();
+          this.getPerson(type);
           throw err;
         })
       )
       .subscribe((character) => {
         this._state.unsetLoading();
-        this._updateCharacter(character);
+        this._updateCharacter(character, type);
       });
   }
 
-  public getStarship(): void {
+  public getStarship(type: PlayerType = 'PLAYER'): void {
     this._resetCharacters();
     this._state.setLoading();
     this._http
@@ -62,13 +63,13 @@ export class GameCharacterService {
           type: GameCharacterType.Starship,
         })),
         catchError((err) => {
-          this.getStarship();
+          this.getStarship(type);
           throw err;
         })
       )
       .subscribe((character) => {
         this._state.unsetLoading();
-        this._updateCharacter(character);
+        this._updateCharacter(character, type);
       });
   }
 
@@ -76,9 +77,10 @@ export class GameCharacterService {
     return Math.floor(Math.random() * max).toString();
   }
 
-  private _updateCharacter(character: ICharacter): void {
-    console.log(character);
-    this._playerCharacter$.next(character);
+  private _updateCharacter(character: ICharacter, type: PlayerType): void {
+    type === 'PLAYER'
+      ? this._playerCharacter$.next(character)
+      : this._enemyCharacter$.next(character);
   }
 
   private _resetCharacters(): void {

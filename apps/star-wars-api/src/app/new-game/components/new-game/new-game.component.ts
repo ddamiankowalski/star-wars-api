@@ -31,8 +31,12 @@ export class NewGameComponent implements OnInit {
   public loadPlayerCharacter(
     type: GameCharacterType = GameCharacterType.Person
   ): void {
-    type === GameCharacterType.Person
-      ? this._character.getPerson()
-      : this._character.getStarship();
+    if (type === GameCharacterType.Person) {
+      this._character.getPerson();
+      this._character.getPerson('ENEMY');
+    } else {
+      this._character.getStarship();
+      this._character.getStarship('ENEMY');
+    }
   }
 }

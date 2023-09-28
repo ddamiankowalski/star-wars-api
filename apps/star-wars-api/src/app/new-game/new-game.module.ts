@@ -12,9 +12,15 @@ import { PlayerCardComponent } from './components/player-card/player-card.compon
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { CharacterModelPipe } from './pipes/character-model.pipe';
 
 @NgModule({
-  declarations: [NewGameComponent, GameLoaderComponent, PlayerCardComponent],
+  declarations: [
+    NewGameComponent,
+    GameLoaderComponent,
+    PlayerCardComponent,
+    CharacterModelPipe,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(newGameRoutes),
