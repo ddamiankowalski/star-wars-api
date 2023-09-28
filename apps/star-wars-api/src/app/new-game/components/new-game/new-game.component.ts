@@ -10,6 +10,7 @@ import { GameStateService } from '../../services/game-state.service';
 import { Router } from '@angular/router';
 import { GameState } from '../../types/imodel';
 import { StarsBackgroundService } from '../../../common/services/star-background.service';
+import { GameCharacterType } from '../../types/icharacter';
 
 @Component({
   selector: 'swapi-new-game',
@@ -38,6 +39,12 @@ export class NewGameComponent implements OnInit {
     return this._state.isLoading;
   }
 
+  get inactiveType(): string {
+    return this._state.characterType === GameCharacterType.Person
+      ? 'Starships'
+      : 'People';
+  }
+
   public ngOnInit(): void {
     this.loadCharacters();
   }
@@ -57,7 +64,6 @@ export class NewGameComponent implements OnInit {
   }
 
   public loadCharacters(): void {
-    this._character.load('PLAYER');
-    this._character.load('ENEMY');
+    this._character.load();
   }
 }

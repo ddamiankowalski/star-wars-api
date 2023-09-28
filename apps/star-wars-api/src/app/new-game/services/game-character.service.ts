@@ -6,58 +6,77 @@ import {
   IGamePersonCharacter,
   IGameStarshipCharacter,
 } from '../types/icharacter';
-import { Observable, map, catchError, BehaviorSubject } from 'rxjs';
+import {
+  Observable,
+  catchError,
+  BehaviorSubject,
+  combineLatest,
+  map,
+} from 'rxjs';
 import { GameStateService } from './game-state.service';
 import { PlayerType } from '../types/icharacter';
-import { GameState } from '../types/imodel';
+import { GameState, IModel } from '../types/imodel';
 
 @Injectable()
 export class GameCharacterService {
   private _http: HttpClient = inject(HttpClient);
   private _urlPrefix = 'https://www.swapi.tech/api/';
 
-  private _playerCharacter$: BehaviorSubject<ICharacter | null> =
-    new BehaviorSubject<ICharacter | null>(null);
-  private _enemyCharacter$: BehaviorSubject<ICharacter | null> =
-    new BehaviorSubject<ICharacter | null>(null);
+  private _playerCharacter$: BehaviorSubject<IModel | null> =
+    new BehaviorSubject<IModel | null>(null);
+  private _enemyCharacter$: BehaviorSubject<IModel | null> =
+    new BehaviorSubject<IModel | null>(null);
 
   constructor(private _state: GameStateService) {}
 
-  get playerCharacter$(): Observable<ICharacter | null> {
+  get playerCharacter$(): Observable<IModel | null> {
     return this._playerCharacter$.asObservable();
   }
 
-  get enemyCharacter$(): Observable<ICharacter | null> {
+  get enemyCharacter$(): Observable<IModel | null> {
     return this._enemyCharacter$.asObservable();
   }
 
-  public load(type: PlayerType = 'PLAYER'): void {
+  public load(): void {
     this._resetCharacters();
     this._state.setLoading();
-    const characterType = this._getCharacterType();
 
-    this._http
-      .get<IGamePersonCharacter & IGameStarshipCharacter>(
-        this._urlPrefix + `${characterType}/${this._getRandomId(83)}`
-      )
-      .pipe(
-        map((character) => ({
-          ...character,
-          type: GameCharacterType.Person,
-        })),
-        catchError((err) => {
-          this.load();
-          this._state.unsetLoading();
-          throw err;
-        })
-      )
-      .subscribe((character) => {
+    combineLatest([this._loadPlayer$(), this._loadEnemy$()]).subscribe(
+      ([player, enemy]) => {
         this._state.unsetLoading();
-        this._updateCharacter(character, type);
-      });
+        this._updateCharacter(player, 'PLAYER');
+        this._updateCharacter(enemy, 'ENEMY');
+      }
+    );
   }
 
-  private _getRandomId(max: number): string {
+  private _loadEnemy$(): Observable<IModel> {
+    const characterType = this._getCharacterType();
+    return this._http
+      .get<ICharacter>(
+        this._urlPrefix + `${characterType}/${this._getRandomId()}`
+      )
+      .pipe(
+        map((character) => this._mapCharacter(character)),
+        catchError(() => this._loadEnemy$())
+      );
+  }
+
+  private _loadPlayer$(): Observable<IModel> {
+    const characterType = this._getCharacterType();
+    return this._http
+      .get<ICharacter>(
+        this._urlPrefix + `${characterType}/${this._getRandomId()}`
+      )
+      .pipe(
+        map((character) => this._mapCharacter(character)),
+        catchError(() => this._loadEnemy$())
+      );
+  }
+
+  private _getRandomId(): string {
+    const max =
+      this._state.characterType === GameCharacterType.Person ? 83 : 15;
     return Math.floor(Math.random() * max).toString();
   }
 
@@ -67,10 +86,10 @@ export class GameCharacterService {
       : 'starships';
   }
 
-  private _updateCharacter(character: ICharacter, type: PlayerType): void {
+  private _updateCharacter(model: IModel, type: PlayerType): void {
     type === 'PLAYER'
-      ? this._playerCharacter$.next(character)
-      : this._enemyCharacter$.next(character);
+      ? this._playerCharacter$.next(model)
+      : this._enemyCharacter$.next(model);
 
     if (!this._state.isStarted) {
       this._state.setGameState(GameState.Started);
@@ -80,5 +99,36 @@ export class GameCharacterService {
   private _resetCharacters(): void {
     this._playerCharacter$.next(null);
     this._enemyCharacter$.next(null);
+  }
+
+  private _mapCharacter(character: ICharacter): IModel {
+    return this._state.characterType === GameCharacterType.Person
+      ? this._buildPersonModel(character as IGamePersonCharacter)
+      : this._buildStarshipModel(character as IGameStarshipCharacter);
+  }
+
+  private _buildPersonModel(character: IGamePersonCharacter): IModel {
+    const { name, mass, gender } = character.result.properties;
+    return {
+      title: name,
+      subtitle: gender.toUpperCase(),
+      description: character.result.description,
+      value: this._calculateValue(mass),
+    };
+  }
+
+  private _buildStarshipModel(character: IGameStarshipCharacter): IModel {
+    const { model, crew, name } = character.result.properties;
+    return {
+      title: name,
+      subtitle: model,
+      value: this._calculateValue(crew),
+      description: character.result.description,
+    };
+  }
+
+  private _calculateValue(val: string): number {
+    const value = Number(val);
+    return isNaN(value) ? 0 : value;
   }
 }

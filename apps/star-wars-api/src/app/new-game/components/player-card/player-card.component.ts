@@ -5,9 +5,10 @@ import {
   Input,
 } from '@angular/core';
 import { ClassBinder } from '../../../common/services/class-binder.service';
-import { ICharacter, PlayerType } from '../../types/icharacter';
+import { PlayerType } from '../../types/icharacter';
 import { GameCharacterService } from '../../services/game-character.service';
 import { Observable } from 'rxjs';
+import { IModel } from '../../types/imodel';
 
 @Component({
   selector: 'swapi-player-card',
@@ -27,7 +28,7 @@ export class PlayerCardComponent {
     classBinder.bind('swapi-player-card');
   }
 
-  get character$(): Observable<ICharacter | null> {
+  get character$(): Observable<IModel | null> {
     return this.type === 'ENEMY'
       ? this._character.enemyCharacter$
       : this._character.playerCharacter$;
