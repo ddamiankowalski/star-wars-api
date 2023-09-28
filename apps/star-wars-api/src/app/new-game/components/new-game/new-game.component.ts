@@ -23,24 +23,16 @@ import { GameCharacterType } from '../../types/icharacter';
 export class NewGameComponent implements OnInit {
   constructor(
     classBinder: ClassBinder,
+    public state: GameStateService,
     private _character: GameCharacterService,
-    private _state: GameStateService,
     private _background: StarsBackgroundService,
     private _router: Router
   ) {
     classBinder.bind('swapi-new-game');
   }
 
-  get isStarted(): boolean {
-    return this._state.isStarted;
-  }
-
-  get isLoading(): boolean {
-    return this._state.isLoading;
-  }
-
   get inactiveType(): string {
-    return this._state.characterType === GameCharacterType.Person
+    return this.state.characterType === GameCharacterType.Person
       ? 'Starships'
       : 'People';
   }
@@ -51,8 +43,8 @@ export class NewGameComponent implements OnInit {
 
   public onQuit(): void {
     this._router.navigate(['']);
-    this._state.setGameState(GameState.Closed);
-    this._state.resetPoints();
+    this.state.setGameState(GameState.Closed);
+    this.state.resetPoints();
   }
 
   public nextRound(): void {
@@ -61,7 +53,7 @@ export class NewGameComponent implements OnInit {
   }
 
   public toggleCharacterType(): void {
-    this._state.toggleCharacterType();
+    this.state.toggleCharacterType();
   }
 
   public loadCharacters(): void {

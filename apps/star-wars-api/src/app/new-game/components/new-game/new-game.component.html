@@ -3,12 +3,29 @@
   <swapi-player-card type="ENEMY"></swapi-player-card>
 </div>
 
-<section *ngIf="isStarted" class="swapi-new-game__main-actions">
-  <button mat-flat-button color="primary" (click)="nextRound()">
+<section *ngIf="state.isStarted" class="swapi-new-game__main-actions">
+  <button
+    test-id="next-round"
+    mat-flat-button
+    color="primary"
+    (click)="nextRound()"
+  >
     Next round
   </button>
-  <button mat-stroked-button color="primary" (click)="toggleCharacterType()">
+  <button
+    test-id="toggle-character"
+    mat-stroked-button
+    color="primary"
+    (click)="toggleCharacterType()"
+  >
     Use {{ inactiveType }}
   </button>
-  <button mat-stroked-button color="primary" (click)="onQuit()">Quit</button>
+  <button
+    test-id="on-quit"
+    mat-stroked-button
+    color="primary"
+    (click)="onQuit()"
+  >
+    Quit
+  </button>
 </section>
