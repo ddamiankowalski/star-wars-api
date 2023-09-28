@@ -4,6 +4,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ClassBinder } from '../../../common/services/class-binder.service';
+import { GameStateService } from '../../services/game-state.service';
 
 @Component({
   selector: 'swapi-new-game',
@@ -14,7 +15,10 @@ import { ClassBinder } from '../../../common/services/class-binder.service';
   providers: [ClassBinder],
 })
 export class NewGameComponent {
-  constructor(classBinder: ClassBinder) {
+  constructor(classBinder: ClassBinder, private _state: GameStateService) {
     classBinder.bind('swapi-new-game');
+    setTimeout(() => {
+      this._state.setLoading();
+    });
   }
 }
