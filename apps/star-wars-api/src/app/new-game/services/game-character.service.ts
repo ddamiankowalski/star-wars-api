@@ -9,6 +9,7 @@ import {
 import { Observable, map, catchError, BehaviorSubject } from 'rxjs';
 import { GameStateService } from './game-state.service';
 import { PlayerType } from '../types/icharacter';
+import { GameState } from '../types/imodel';
 
 @Injectable()
 export class GameCharacterService {
@@ -83,6 +84,10 @@ export class GameCharacterService {
     type === 'PLAYER'
       ? this._playerCharacter$.next(character)
       : this._enemyCharacter$.next(character);
+
+    if (!this._state.isStarted) {
+      this._state.setGameState(GameState.Started);
+    }
   }
 
   private _resetCharacters(): void {

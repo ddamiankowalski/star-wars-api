@@ -9,6 +9,7 @@ import { GameCharacterService } from '../../services/game-character.service';
 import { GameCharacterType } from '../../types/icharacter';
 import { GameStateService } from '../../services/game-state.service';
 import { Router } from '@angular/router';
+import { GameState } from '../../types/imodel';
 
 @Component({
   selector: 'swapi-new-game',
@@ -28,19 +29,28 @@ export class NewGameComponent implements OnInit {
     classBinder.bind('swapi-new-game');
   }
 
+  get isStarted(): boolean {
+    return this._state.isStarted;
+  }
+
   public ngOnInit(): void {
-    this.loadPlayerCharacter();
+    this.loadCharacters();
   }
 
   public onQuit(): void {
     this._router.navigate(['']);
+    this._state.setGameState(GameState.Closed);
+  }
+
+  public nextRound(): void {
+    this.loadCharacters();
   }
 
   get isLoading(): boolean {
     return this._state.isLoading;
   }
 
-  public loadPlayerCharacter(
+  public loadCharacters(
     type: GameCharacterType = GameCharacterType.Person
   ): void {
     if (type === GameCharacterType.Person) {

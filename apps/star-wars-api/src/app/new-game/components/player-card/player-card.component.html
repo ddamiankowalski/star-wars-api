@@ -2,9 +2,12 @@
   <mat-card>
     <ng-container *ngIf="character | characterModel as model">
       <mat-card-header>
-        <mat-card-subtitle class="swapi-player-card__subtitle">{{
-          model.subtitle
-        }}</mat-card-subtitle>
+        <mat-card-subtitle class="swapi-player-card__subtitle"
+          >{{ model.subtitle }} -
+          <span class="swapi-player-card__subtitle-player">{{
+            type
+          }}</span></mat-card-subtitle
+        >
         <mat-card-title class="swapi-player-card__title">{{
           model.title
         }}</mat-card-title>

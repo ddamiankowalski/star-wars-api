@@ -2,6 +2,8 @@
   &__wrapper {
     min-width: 10rem;
     min-height: 10rem;
+    animation-name: card-show;
+    animation-duration: 1s;
   }
 
   &__subtitle {
@@ -26,5 +28,21 @@
 
   &__content-points {
     margin-bottom: .5rem !important;
+  }
+}
+
+@keyframes card-show {
+  0% {
+    opacity: 0;
+    transform: translateY(-2rem)
+  }
+
+  50% {
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

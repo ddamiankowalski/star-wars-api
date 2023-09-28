@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { GameLoaderComponent } from '../components/game-loader/game-loader.component';
+import { GameState } from '../types/imodel';
 
 @Injectable()
 export class GameStateService {
   private _loadingRef = 0;
   private _isLoading = false;
+  private _gameState: GameState = GameState.Closed;
   private _loadingDialogRef: DialogRef<
     GameLoaderComponent,
     GameLoaderComponent
@@ -15,6 +17,14 @@ export class GameStateService {
 
   get isLoading(): boolean {
     return this._isLoading;
+  }
+
+  get isStarted(): boolean {
+    return this._gameState === GameState.Started;
+  }
+
+  public setGameState(state: GameState): void {
+    this._gameState = state;
   }
 
   public setLoading(): void {

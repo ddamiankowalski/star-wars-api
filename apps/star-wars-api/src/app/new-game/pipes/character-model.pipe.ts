@@ -23,7 +23,7 @@ export class CharacterModelPipe implements PipeTransform {
       title: name,
       subtitle: gender.toUpperCase(),
       description: character.result.description,
-      value: Number(mass),
+      value: this._calculateValue(mass),
     };
   }
 
@@ -32,8 +32,13 @@ export class CharacterModelPipe implements PipeTransform {
     return {
       title: name,
       subtitle: model,
-      value: Number(crew),
+      value: this._calculateValue(crew),
       description: character.result.description,
     };
+  }
+
+  private _calculateValue(val: string): number {
+    const value = Number(val);
+    return isNaN(value) ? 0 : value;
   }
 }

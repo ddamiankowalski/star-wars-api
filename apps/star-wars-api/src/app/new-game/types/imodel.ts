@@ -4,3 +4,8 @@ export interface IModel {
   description: string;
   value: number;
 }
+
+export enum GameState {
+  Started = 'STARTED',
+  Closed = 'CLOSED',
+}
