@@ -52,6 +52,7 @@ export class NewGameComponent implements OnInit {
   public onQuit(): void {
     this._router.navigate(['']);
     this._state.setGameState(GameState.Closed);
+    this._state.resetPoints();
   }
 
   public nextRound(): void {

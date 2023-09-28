@@ -59,6 +59,11 @@ export class GameStateService {
     this._roundWinner$.next(winner);
   }
 
+  public resetPoints(): void {
+    this._points = { ENEMY: 0, PLAYER: 0 };
+    this._points$.next(this._points);
+  }
+
   public resetWinner(): void {
     this._roundWinner$.next(null);
   }

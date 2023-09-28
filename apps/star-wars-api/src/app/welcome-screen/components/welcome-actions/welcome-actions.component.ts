@@ -28,4 +28,11 @@ export class WelcomeActionsComponent {
     this._router.navigate(['new-game']);
     this._background.startAnimation();
   }
+
+  public onGithubClick(): void {
+    window.open(
+      'https://github.com/ddamiankowalski?tab=repositories',
+      '_blank'
+    );
+  }
 }
