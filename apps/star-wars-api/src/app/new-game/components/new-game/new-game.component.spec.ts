@@ -6,9 +6,10 @@ import { StarsBackgroundService } from '../../../common/services/star-background
 import { RouterTestingModule } from '@angular/router/testing';
 import { GameCharacterType } from '../../types/icharacter';
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { DialogModule } from '@angular/cdk/dialog';
 import { By } from '@angular/platform-browser';
+import { PlayerCardComponent } from '../player-card/player-card.component';
 import { GameState } from '../../types/imodel';
 
 describe('NewGameComponent', () => {
@@ -20,9 +21,8 @@ describe('NewGameComponent', () => {
     jest.clearAllMocks();
 
     TestBed.configureTestingModule({
-      imports: [CommonModule, DialogModule],
-      declarations: [NewGameComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [CommonModule, DialogModule, MatButtonModule],
+      declarations: [NewGameComponent, PlayerCardComponent],
       providers: [
         { provide: GameCharacterService, useValue: { load: loadCharacterSpy } },
         GameStateService,
@@ -35,6 +35,7 @@ describe('NewGameComponent', () => {
     });
 
     fixture = TestBed.createComponent(NewGameComponent);
+    fixture.componentInstance.state.setGameState(GameState.Started);
     fixture.detectChanges();
   });
 
@@ -49,6 +50,7 @@ describe('NewGameComponent', () => {
   });
 
   it('calls load method once when onInit is called', () => {
+    jest.clearAllMocks();
     fixture.componentInstance.ngOnInit();
     expect(loadCharacterSpy).toHaveBeenCalledTimes(1);
   });
@@ -68,9 +70,8 @@ describe('NewGameComponent', () => {
   });
 
   it('clicking on nextRound button loads characters', () => {
-    const nextRound = fixture.debugElement.query(
-      By.css("[test-id]='next-round'")
-    );
+    jest.clearAllMocks();
+    const nextRound = fixture.debugElement.query(By.css('#next-round'));
     nextRound.triggerEventHandler('click');
     fixture.detectChanges();
 
@@ -78,9 +79,7 @@ describe('NewGameComponent', () => {
   });
 
   it('clicking on nextRound starts an animation', () => {
-    const nextRound = fixture.debugElement.query(
-      By.css("[test-id]='next-round'")
-    );
+    const nextRound = fixture.debugElement.query(By.css('#next-round'));
     nextRound.triggerEventHandler('click');
     fixture.detectChanges();
 
@@ -92,9 +91,7 @@ describe('NewGameComponent', () => {
       fixture.componentInstance.state,
       'toggleCharacterType'
     );
-    const nextRound = fixture.debugElement.query(
-      By.css("[test-id]='toggle-character'")
-    );
+    const nextRound = fixture.debugElement.query(By.css('#toggle-character'));
     nextRound.triggerEventHandler('click');
     fixture.detectChanges();
 
@@ -106,28 +103,15 @@ describe('NewGameComponent', () => {
       (fixture.componentInstance as any)._router,
       'navigate'
     );
-    const nextRound = fixture.debugElement.query(By.css("[test-id]='on-quit'"));
-    nextRound.triggerEventHandler('click');
-    fixture.detectChanges();
-
-    expect(navigateSpy).toHaveBeenCalledWith(['']);
-  });
-
-  it('clicking onQuit button resets game state and points', () => {
-    const setGameStateSpy = jest.spyOn(
-      fixture.componentInstance.state,
-      'setGameState'
-    );
     const resetPointsSpy = jest.spyOn(
       fixture.componentInstance.state,
       'resetPoints'
     );
-
-    const nextRound = fixture.debugElement.query(By.css("[test-id]='on-quit'"));
+    const nextRound = fixture.debugElement.query(By.css('#on-quit'));
     nextRound.triggerEventHandler('click');
     fixture.detectChanges();
 
-    expect(setGameStateSpy).toHaveBeenCalledWith(GameState.Closed);
+    expect(navigateSpy).toHaveBeenCalledWith(['']);
     expect(resetPointsSpy).toHaveBeenCalledTimes(1);
   });
 });

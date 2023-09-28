@@ -4,28 +4,18 @@
 </div>
 
 <section *ngIf="state.isStarted" class="swapi-new-game__main-actions">
-  <button
-    test-id="next-round"
-    mat-flat-button
-    color="primary"
-    (click)="nextRound()"
-  >
+  <button id="next-round" mat-flat-button color="primary" (click)="nextRound()">
     Next round
   </button>
   <button
-    test-id="toggle-character"
+    id="toggle-character"
     mat-stroked-button
     color="primary"
     (click)="toggleCharacterType()"
   >
     Use {{ inactiveType }}
   </button>
-  <button
-    test-id="on-quit"
-    mat-stroked-button
-    color="primary"
-    (click)="onQuit()"
-  >
+  <button id="on-quit" mat-stroked-button color="primary" (click)="onQuit()">
     Quit
   </button>
 </section>
