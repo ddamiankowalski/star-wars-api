@@ -46,7 +46,11 @@ export class GameCharacterService {
         this._state.unsetLoading();
         this._updateCharacter(player, 'PLAYER');
         this._updateCharacter(enemy, 'ENEMY');
+
         this._state.comparePoints(player, enemy);
+        if (!this._state.isStarted) {
+          this._state.setGameState(GameState.Started);
+        }
       }
     );
   }
@@ -91,10 +95,6 @@ export class GameCharacterService {
     type === 'PLAYER'
       ? this._playerCharacter$.next(model)
       : this._enemyCharacter$.next(model);
-
-    if (!this._state.isStarted) {
-      this._state.setGameState(GameState.Started);
-    }
   }
 
   private _resetCharacters(): void {
