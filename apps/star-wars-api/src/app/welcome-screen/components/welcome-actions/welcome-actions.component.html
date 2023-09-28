@@ -3,10 +3,20 @@
 </div>
 
 <div class="swapi-welcome-actions__buttons">
-  <button mat-flat-button color="primary" (click)="newGameClick()">
+  <button
+    id="game-button"
+    mat-flat-button
+    color="primary"
+    (click)="newGameClick()"
+  >
     New Game
   </button>
-  <button mat-stroked-button color="primary" (click)="onGithubClick()">
+  <button
+    id="github-acc"
+    mat-stroked-button
+    color="primary"
+    (click)="onGithubClick()"
+  >
     See my Github
   </button>
 </div>
