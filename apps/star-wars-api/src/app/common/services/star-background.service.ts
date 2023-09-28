@@ -12,7 +12,7 @@ export class StarsBackgroundService {
 
   public startAnimation(): void {
     if (!this._background) {
-      return;
+      throw new Error('Could not animate before initialization');
     }
 
     this._background.startAnimation();
