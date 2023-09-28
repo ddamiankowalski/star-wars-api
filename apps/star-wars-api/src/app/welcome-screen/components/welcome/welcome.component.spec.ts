@@ -13,4 +13,10 @@ describe('WelcomeComponent', () => {
   it('successfully initializes', () => {
     expect(fixture).toBeDefined();
   });
+
+  it('binds a correct class', () => {
+    expect(
+      fixture.nativeElement.classList.contains('swapi-welcome')
+    ).toBeTruthy();
+  });
 });
