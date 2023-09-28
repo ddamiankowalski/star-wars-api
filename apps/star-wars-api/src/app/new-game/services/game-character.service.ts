@@ -46,6 +46,7 @@ export class GameCharacterService {
         this._state.unsetLoading();
         this._updateCharacter(player, 'PLAYER');
         this._updateCharacter(enemy, 'ENEMY');
+        this._state.comparePoints(player, enemy);
       }
     );
   }
@@ -57,7 +58,7 @@ export class GameCharacterService {
         this._urlPrefix + `${characterType}/${this._getRandomId()}`
       )
       .pipe(
-        map((character) => this._mapCharacter(character)),
+        map((character) => this._buildModel(character)),
         catchError(() => this._loadEnemy$())
       );
   }
@@ -69,7 +70,7 @@ export class GameCharacterService {
         this._urlPrefix + `${characterType}/${this._getRandomId()}`
       )
       .pipe(
-        map((character) => this._mapCharacter(character)),
+        map((character) => this._buildModel(character)),
         catchError(() => this._loadEnemy$())
       );
   }
@@ -99,9 +100,10 @@ export class GameCharacterService {
   private _resetCharacters(): void {
     this._playerCharacter$.next(null);
     this._enemyCharacter$.next(null);
+    this._state.resetWinner();
   }
 
-  private _mapCharacter(character: ICharacter): IModel {
+  private _buildModel(character: ICharacter): IModel {
     return this._state.characterType === GameCharacterType.Person
       ? this._buildPersonModel(character as IGamePersonCharacter)
       : this._buildStarshipModel(character as IGameStarshipCharacter);

@@ -2,11 +2,14 @@
   *ngIf="character$ | async as characterModel"
   class="swapi-player-card__wrapper"
 >
-  <mat-card>
+  <mat-card
+    class="swapi-player-card__card"
+    [class.swapi-player-card--winner]="(winner$ | async) === type"
+  >
     <ng-container *ngIf="characterModel">
       <mat-card-header>
         <mat-card-subtitle class="swapi-player-card__subtitle"
-          >{{ characterModel.subtitle }} -
+          >{{ characterModel.subtitle }}
           <span class="swapi-player-card__subtitle-player">{{
             type
           }}</span></mat-card-subtitle
@@ -16,11 +19,20 @@
         }}</mat-card-title>
       </mat-card-header>
       <mat-card-content class="swapi-player-card__content">
-        <p>{{ characterModel.description }}</p>
-        <p class="swapi-player-card__content-points">
-          <span class="swapi-player-card__content--bold">Points:</span>
-          {{ characterModel.value }}
-        </p>
+        <div class="swapi-player-card__content-points">
+          <p class="swapi-player-card__strength-points">
+            <span class="swapi-player-card__content--bold"
+              >Character Strength:</span
+            >
+            {{ characterModel.value }}
+          </p>
+          <p class="swapi-player-card__overall-points">
+            Overall:
+            <span class="swapi-player-card__overall-points--highlight">{{
+              points$ | async
+            }}</span>
+          </p>
+        </div>
       </mat-card-content>
     </ng-container>
   </mat-card>

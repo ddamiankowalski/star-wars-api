@@ -1,9 +1,32 @@
 .swapi-player-card {
   &__wrapper {
-    min-width: 10rem;
-    min-height: 10rem;
     animation-name: card-show;
     animation-duration: 1s;
+  }
+
+  &__card {
+    height: 7.5rem;
+    width: 17rem;
+    overflow: hidden;
+  }
+
+  &--player {
+    .swapi-player-card__subtitle-player {
+      color: green;
+      opacity: .4;
+    }
+  }
+
+  &--enemy {
+    .swapi-player-card__subtitle-player {
+      color: red;
+      opacity: .4;
+    }
+  }
+
+  &--winner {
+    animation-name: card-win;
+    animation-duration: 2s;
   }
 
   &__subtitle {
@@ -11,10 +34,19 @@
     font-weight: 500 !important;
     margin: .5rem 0 !important;
     max-width: 10rem;
+    text-wrap: nowrap;
   }
 
   &__title {
     font-weight: 500 !important;
+  }
+
+  &__overall-points {
+    font-weight: 500;
+
+    &--highlight {
+      font-weight: normal;
+    }
   }
 
   &__content {
@@ -27,7 +59,9 @@
   }
 
   &__content-points {
-    margin-bottom: .5rem !important;
+    display: flex;
+    justify-content: space-between;
+    margin: .25rem 0;
   }
 }
 
@@ -44,5 +78,39 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes card-win {
+
+  0%,
+  20%,
+  53%,
+  80%,
+  100% {
+    -webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  40%,
+  43% {
+    -webkit-transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    -webkit-transform: translate3d(0, -30px, 0);
+    transform: translate3d(0, -30px, 0);
+  }
+
+  70% {
+    -webkit-transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    transition-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    -webkit-transform: translate3d(0, -15px, 0);
+    transform: translate3d(0, -15px, 0);
+  }
+
+  90% {
+    -webkit-transform: translate3d(0, -4px, 0);
+    transform: translate3d(0, -4px, 0);
   }
 }

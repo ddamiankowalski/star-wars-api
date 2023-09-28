@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { GameLoaderComponent } from '../components/game-loader/game-loader.component';
-import { GameState } from '../types/imodel';
-import { GameCharacterType } from '../types/icharacter';
+import { GameState, IModel, IPoints } from '../types/imodel';
+import { GameCharacterType, PlayerType } from '../types/icharacter';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class GameStateService {
@@ -10,10 +11,17 @@ export class GameStateService {
   private _isLoading = false;
   private _characterType: GameCharacterType = GameCharacterType.Person;
   private _gameState: GameState = GameState.Closed;
+  private _points: IPoints = { ENEMY: 0, PLAYER: 0 };
   private _loadingDialogRef: DialogRef<
     GameLoaderComponent,
     GameLoaderComponent
   > | null = null;
+
+  private _roundWinner$: BehaviorSubject<PlayerType | 'DRAW' | null> =
+    new BehaviorSubject<PlayerType | 'DRAW' | null>(null);
+  private _points$: BehaviorSubject<IPoints> = new BehaviorSubject(
+    this._points
+  );
 
   constructor(private _dialog: Dialog) {}
 
@@ -27,6 +35,32 @@ export class GameStateService {
 
   get characterType(): GameCharacterType {
     return this._characterType;
+  }
+
+  get roundWinner$(): Observable<PlayerType | 'DRAW' | null> {
+    return this._roundWinner$.asObservable();
+  }
+
+  get points$(): Observable<IPoints> {
+    return this._points$.asObservable();
+  }
+
+  public comparePoints(player: IModel, enemy: IModel): void {
+    let winner: PlayerType | 'DRAW' = 'DRAW';
+
+    if (player.value > enemy.value) {
+      winner = 'PLAYER';
+      this._addPoint('PLAYER');
+    } else if (player.value < enemy.value) {
+      winner = 'ENEMY';
+      this._addPoint('ENEMY');
+    }
+
+    this._roundWinner$.next(winner);
+  }
+
+  public resetWinner(): void {
+    this._roundWinner$.next(null);
   }
 
   public toggleCharacterType(): void {
@@ -62,5 +96,9 @@ export class GameStateService {
       this._loadingDialogRef?.close();
       this._isLoading = false;
     }
+  }
+
+  private _addPoint(type: PlayerType): void {
+    this._points[type]++;
   }
 }
