@@ -6,10 +6,10 @@ import {
 } from '@angular/core';
 import { ClassBinder } from '../../../common/services/class-binder.service';
 import { GameCharacterService } from '../../services/game-character.service';
-import { GameCharacterType } from '../../types/icharacter';
 import { GameStateService } from '../../services/game-state.service';
 import { Router } from '@angular/router';
 import { GameState } from '../../types/imodel';
+import { StarsBackgroundService } from '../../../common/services/star-background.service';
 
 @Component({
   selector: 'swapi-new-game',
@@ -24,6 +24,7 @@ export class NewGameComponent implements OnInit {
     classBinder: ClassBinder,
     private _character: GameCharacterService,
     private _state: GameStateService,
+    private _background: StarsBackgroundService,
     private _router: Router
   ) {
     classBinder.bind('swapi-new-game');
@@ -31,6 +32,10 @@ export class NewGameComponent implements OnInit {
 
   get isStarted(): boolean {
     return this._state.isStarted;
+  }
+
+  get isLoading(): boolean {
+    return this._state.isLoading;
   }
 
   public ngOnInit(): void {
@@ -44,21 +49,15 @@ export class NewGameComponent implements OnInit {
 
   public nextRound(): void {
     this.loadCharacters();
+    this._background.startAnimation();
   }
 
-  get isLoading(): boolean {
-    return this._state.isLoading;
+  public toggleCharacterType(): void {
+    this._state.toggleCharacterType();
   }
 
-  public loadCharacters(
-    type: GameCharacterType = GameCharacterType.Person
-  ): void {
-    if (type === GameCharacterType.Person) {
-      this._character.getPerson();
-      this._character.getPerson('ENEMY');
-    } else {
-      this._character.getStarship();
-      this._character.getStarship('ENEMY');
-    }
+  public loadCharacters(): void {
+    this._character.load('PLAYER');
+    this._character.load('ENEMY');
   }
 }

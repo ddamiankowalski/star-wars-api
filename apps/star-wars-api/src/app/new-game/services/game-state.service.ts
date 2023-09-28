@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { GameLoaderComponent } from '../components/game-loader/game-loader.component';
 import { GameState } from '../types/imodel';
+import { GameCharacterType } from '../types/icharacter';
 
 @Injectable()
 export class GameStateService {
   private _loadingRef = 0;
   private _isLoading = false;
+  private _characterType: GameCharacterType = GameCharacterType.Person;
   private _gameState: GameState = GameState.Closed;
   private _loadingDialogRef: DialogRef<
     GameLoaderComponent,
@@ -21,6 +23,17 @@ export class GameStateService {
 
   get isStarted(): boolean {
     return this._gameState === GameState.Started;
+  }
+
+  get characterType(): GameCharacterType {
+    return this._characterType;
+  }
+
+  public toggleCharacterType(): void {
+    this._characterType =
+      this._characterType === GameCharacterType.Person
+        ? GameCharacterType.Starship
+        : GameCharacterType.Person;
   }
 
   public setGameState(state: GameState): void {

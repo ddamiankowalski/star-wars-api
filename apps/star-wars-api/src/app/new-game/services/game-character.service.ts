@@ -31,41 +31,22 @@ export class GameCharacterService {
     return this._enemyCharacter$.asObservable();
   }
 
-  public getPerson(type: PlayerType = 'PLAYER'): void {
+  public load(type: PlayerType = 'PLAYER'): void {
     this._resetCharacters();
     this._state.setLoading();
-    this._http
-      .get<IGamePersonCharacter>(
-        this._urlPrefix + `people/${this._getRandomId(83)}`
-      )
-      .pipe(
-        map((character) => ({ ...character, type: GameCharacterType.Person })),
-        catchError((err) => {
-          this.getPerson(type);
-          this._state.unsetLoading();
-          throw err;
-        })
-      )
-      .subscribe((character) => {
-        this._state.unsetLoading();
-        this._updateCharacter(character, type);
-      });
-  }
+    const characterType = this._getCharacterType();
 
-  public getStarship(type: PlayerType = 'PLAYER'): void {
-    this._resetCharacters();
-    this._state.setLoading();
     this._http
-      .get<IGameStarshipCharacter>(
-        this._urlPrefix + `starships/${this._getRandomId(15)}`
+      .get<IGamePersonCharacter & IGameStarshipCharacter>(
+        this._urlPrefix + `${characterType}/${this._getRandomId(83)}`
       )
       .pipe(
         map((character) => ({
           ...character,
-          type: GameCharacterType.Starship,
+          type: GameCharacterType.Person,
         })),
         catchError((err) => {
-          this.getStarship(type);
+          this.load();
           this._state.unsetLoading();
           throw err;
         })
@@ -78,6 +59,12 @@ export class GameCharacterService {
 
   private _getRandomId(max: number): string {
     return Math.floor(Math.random() * max).toString();
+  }
+
+  private _getCharacterType(): 'people' | 'starships' {
+    return this._state.characterType === GameCharacterType.Person
+      ? 'people'
+      : 'starships';
   }
 
   private _updateCharacter(character: ICharacter, type: PlayerType): void {
